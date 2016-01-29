@@ -5,14 +5,22 @@ var path = require('path');
 
 
 var http = require('http').Server(app);
-var io   = require('socket.io')(http);
+var io = require('socket.io')(http);
 
 
 
-app.use(express.static(path.join(__dirname, 'views'))); 
+var user = []
+app.use(express.static(path.join(__dirname, 'views')));
+
+app.post('/', function (req,res) {
+  console.log('---');
+    console.log(req.params.data);
+  user.push(req.body);
+   res.send('Hello');
+});
 
 io.on('connection', function(socket) {
-  
+
   console.log('New user connected');
 
   socket.on('chat message', function(msg) {
@@ -22,8 +30,9 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function() {
     console.log('User disconnected');
   });
-  
+
 });
-http.listen(8080, function() {
+
+http.listen(3000, function() {
   console.log('listening on :8080');
 });
